@@ -26,7 +26,12 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-
+        $schedule->command('sportsevent:getLqSchedule')->everyThirtyMinutes()();
+        $schedule->command('sportsevent:getLqSClass')->everyThirtyMinutes()();
+        $schedule->command('sportsevent:getLineup')->everyThirtyMinutes()();
+        $schedule->command('sportsevent:getPlayerTech')->everyThirtyMinutes()();
+        $schedule->command('sportsevent:getTodayLqSchedule')->everyThirtyMinutes()();
+        $schedule->command('sportsevent:setData')->hourly();
     }
 
     /**
