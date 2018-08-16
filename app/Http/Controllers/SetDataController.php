@@ -126,7 +126,7 @@ class SetDataController extends Controller
                     }
                 }
             });
-            echo "球员技术统计数据写入数据库成功";
+            echo "球员技术统计数据写入数据库成功\n";
         }catch (\Exception $exception){
             echo  "球员技术统计数据写入数据库失败：".$exception->getMessage();
         }
@@ -418,9 +418,9 @@ class SetDataController extends Controller
                     );
                 }
             });
-            echo  "篮球比赛数据写入数据库成功\n";
+            echo  "今日篮球比赛数据写入数据库成功\n";
         }catch (\Exception $exception){
-            echo  "篮球比赛数据写入数据库失败：".$exception->getMessage();
+            echo  "今日篮球比赛数据写入数据库失败：".$exception->getMessage();
         }
     }
 }
