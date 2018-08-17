@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+set_time_limit(0);
 use App\Models\LqSchedule;
 use App\Models\LqSclass;
 use App\Models\LqSclassInfo;
@@ -265,60 +265,65 @@ class SetDataController extends Controller
             \DB::transaction(function() use ($data) {
                 foreach ($data as $item)
                 {
-                    LqSchedule::updateOrCreate(
-                            ['ScheduleID'=>$item['ScheduleID'],'SClassID'=>$item['SClassID']],
+                    foreach($item as $val)
+                    {
+                        LqSchedule::updateOrCreate(
+                            ['ScheduleID'=>$val['ScheduleID'],'SClassID'=>$val['SClassID']],
                             [
-                            'ScheduleID' =>intval($item['ScheduleID']),
-                            'SClassID' =>intval($item['SClassID']),
-                            'SClassType' =>intval($item['SClassType']),
-                            'SClassName_J' =>$item['SClassName_J'],
-                            'SClassName_F' =>$item['SClassName_F'],
-                            'MatchNumber' =>intval($item['MatchNumber']),
-                            'Color' =>$item['Color'],
-                            'MatchTime' =>$item['MatchTime'],
-                            'MatchState' =>intval($item['MatchState']),
-                            'MatchNumberTime' =>$item['MatchNumberTime'],
-                            'HomeTeamID' =>intval($item['HomeTeamID']),
-                            'HomeTeamName_J' =>$item['HomeTeamName_J'],
-                            'HomeTeamName_F' =>$item['HomeTeamName_F'],
-                            'GuestTeamID' =>intval($item['GuestTeamID']),
-                            'GuestTeamName_J'=>$item['GuestTeamName_J'],
-                            'GuestTeamName_F' =>$item['GuestTeamName_F'],
-                            'HomeTeamRank' =>intval($item['HomeTeamRank']),
-                            'GuestTeamRank' =>intval($item['GuestTeamRank']),
-                            'HomeTeamScore' =>intval($item['HomeTeamScore']),
-                            'GuestTeamScore' =>intval($item['GuestTeamScore']),
-                            'HomeOneScore' =>intval($item['HomeOneScore']),
-                            'HomeTwoScore' =>intval($item['HomeTwoScore']),
-                            'HomeThreeScore' =>intval($item['HomeThreeScore']),
-                            'HomeFourScore' =>intval($item['HomeFourScore']),
-                            'GuestOneScore' =>intval($item['GuestOneScore']),
-                            'GuestTwoScore' =>intval($item['GuestTwoScore']),
-                            'GuestThreeScore' =>intval($item['GuestThreeScore']),
-                            'GuestFourScore' =>intval($item['GuestFourScore']),
-                            'OverTimeNumber' =>intval($item['OverTimeNumber']),
-                            'HomeOneOverTimeScore' =>intval($item['HomeOneOverTimeScore']),
-                            'HomeTwoOverTimeScore'=>intval($item['HomeTwoOverTimeScore']),
-                            'HomeThreeOverTimeScore' =>intval($item['HomeThreeOverTimeScore']),
-                            'GuestOneOverTimeScore' =>intval($item['GuestOneOverTimeScore']),
-                            'GuestTwoOverTimeScore' =>intval($item['GuestTwoOverTimeScore']),
-                            'GuestThreeOverTimeScore' =>intval($item['GuestThreeOverTimeScore']),
-                            'TechnicalStatistics' =>$item['TechnicalStatistics'],
-                            'TVShow' =>$item['TVShow'],
-                            'TVRemark' =>$item['TVRemark'],
-                            'Neutral' =>intval($item['Neutral']),
-                            'Season' =>$item['Season'],
-                            'MatchType' =>$item['MatchType'],
-                            'MatchAddress' =>$item['MatchAddress'],
-                            'MatchCate' =>$item['MatchCate'],
-                            'MatchSubSClass' =>$item['MatchSubSClass'],
-                        ]
-                    );
+                                'ScheduleID' =>intval($val['ScheduleID']),
+                                'SClassID' =>intval($val['SClassID']),
+                                'SClassType' =>$val['SClassType'],
+                                'SClassName_J' =>$val['SClassName_J'],
+                                'SClassName_F' =>$val['SClassName_F'],
+                                'MatchNumber' =>$val['MatchNumber'],
+                                'Color' =>$val['Color'],
+                                'MatchTime' =>$val['MatchTime'],
+                                'MatchState' =>$val['MatchState'],
+                                'MatchNumberTime' =>$val['MatchNumberTime'],
+                                'HomeTeamID' =>$val['HomeTeamID'],
+                                'HomeTeamName_J' =>$val['HomeTeamName_J'],
+                                'HomeTeamName_F' =>$val['HomeTeamName_F'],
+                                'GuestTeamID' =>$val['GuestTeamID'],
+                                'GuestTeamName_J'=>$val['GuestTeamName_J'],
+                                'GuestTeamName_F' =>$val['GuestTeamName_F'],
+                                'HomeTeamRank' =>$val['HomeTeamRank'],
+                                'GuestTeamRank' =>$val['GuestTeamRank'],
+                                'HomeTeamScore' =>$val['HomeTeamScore'],
+                                'GuestTeamScore' =>$val['GuestTeamScore'],
+                                'HomeOneScore' =>$val['HomeOneScore'],
+                                'HomeTwoScore' =>$val['HomeTwoScore'],
+                                'HomeThreeScore' =>$val['HomeThreeScore'],
+                                'HomeFourScore' =>$val['HomeFourScore'],
+                                'GuestOneScore' =>$val['GuestOneScore'],
+                                'GuestTwoScore' =>$val['GuestTwoScore'],
+                                'GuestThreeScore' =>$val['GuestThreeScore'],
+                                'GuestFourScore' =>$val['GuestFourScore'],
+                                'OverTimeNumber' =>$val['OverTimeNumber'],
+                                'HomeOneOverTimeScore' =>$val['HomeOneOverTimeScore'],
+                                'HomeTwoOverTimeScore'=>$val['HomeTwoOverTimeScore'],
+                                'HomeThreeOverTimeScore' =>$val['HomeThreeOverTimeScore'],
+                                'GuestOneOverTimeScore' =>$val['GuestOneOverTimeScore'],
+                                'GuestTwoOverTimeScore' =>$val['GuestTwoOverTimeScore'],
+                                'GuestThreeOverTimeScore' =>$val['GuestThreeOverTimeScore'],
+                                'TechnicalStatistics' =>$val['TechnicalStatistics'],
+                                'TVShow' =>$val['TVShow'],
+                                'TVRemark' =>$val['TVRemark'],
+                                'Neutral' =>$val['Neutral'],
+                                'Season' =>$val['Season'],
+                                'MatchType' =>$val['MatchType'],
+                                'MatchAddress' =>$val['MatchAddress'],
+                                'MatchCate' =>$val['MatchCate'],
+                                'MatchSubSClass' =>$val['MatchSubSClass'],
+                            ]
+                        );
+                    }
                 }
 
             });
+            echo "篮球比赛数据写入数据库成功\n";
             Log::info("篮球比赛数据写入数据库成功\n");
         }catch (\Exception $exception){
+            echo "篮球比赛数据写入数据库失败：".$exception->getMessage();
             Log::info("篮球比赛数据写入数据库失败：".$exception->getMessage());
         }
     }
