@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LqSchedule;
 use App\Models\LqSclass;
 use App\Models\ZqLineup;
 use App\Models\ZqPlayerTech;
@@ -45,7 +46,13 @@ class HomeController extends Controller
     public function getLqSclass()
     {
         $lqSclass = new LqSclass();
-        //$lqSclass->getSclass();
+        $lqSclass->getSclass();
         $lqSclass->getSClassInfo();
+    }
+
+    public function getLqSchedule()
+    {
+        $LqSchedule = new LqSchedule();
+        $LqSchedule->getSchedule();
     }
 }

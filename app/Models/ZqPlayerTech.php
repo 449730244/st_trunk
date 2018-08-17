@@ -46,7 +46,7 @@ class ZqPlayerTech extends Model
                     Try{
                         if(empty($data['data']))
                         {
-                            Log::info( "比赛ID：{$SClass['ScheduleID']}，获取的数据为空，原始数据为:".$content."\n");
+                            Log::info("比赛ID：{$SClass['ScheduleID']}，获取的数据为空，原始数据为:".$content."\n");
                         }else{
                             foreach($data['data']['play'] as $key => $val)
                             {

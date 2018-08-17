@@ -39,7 +39,7 @@ class ZqLineup extends Model
         Try{
             if(empty($data['data']))
             {
-                Log::error("获取的数据为空，原始数据为:".$content);
+                Log::info("获取的数据为空，原始数据为:".$content);
             }else{
                 if(count($data['data']['match']) != count($data['data']['match'],1))
                 {
@@ -52,7 +52,7 @@ class ZqLineup extends Model
                         $lineup_data[$key]['AwayLineupFirst'] = $this->dataExplode($val['AwayLineup']);
                         $lineup_data[$key]['HomeBackup'] = $this->dataExplode($val['HomeBackup']);
                         $lineup_data[$key]['AwayBackup'] = $this->dataExplode($val['AwayBackup']);
-                        echo "获取：".$val['ID']."成功\n";
+                        Log::info("获取：".$val['ID']."成功\n");
                     }
                 }else{
                     $lineup_data['ScheduleID'] = $data['data']['match']['ID'];
@@ -69,7 +69,7 @@ class ZqLineup extends Model
                 Cache::store('file')->forever('Zq_Lineup', $sorted);
             }
         }catch(\Exception $exception){
-            return "获取数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE);
+            Log::info("获取数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n");
         }
     }
 
