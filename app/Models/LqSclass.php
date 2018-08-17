@@ -5,6 +5,7 @@ namespace App\Models;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
 use Cache;
+use Illuminate\Support\Facades\Log;
 
 class LqSclass extends Model
 {
@@ -15,6 +16,7 @@ class LqSclass extends Model
 
     public function getSclass()
     {
+        Log::useFiles(storage_path('logs/lqSClass.log'));
         $client = new Client(['base_uri' => 'http://sapi.meme100.com/']);
         $response = $client->request('get','lq/LqLeague_Xml.aspx', [
             'query' => ['token'=>'12312313123']
@@ -44,6 +46,7 @@ class LqSclass extends Model
                 //国家数据
                 $sclass[$item->countryID]['InfoID'] = $item->countryID;
                 $sclass[$item->countryID]['NameCN'] = $item->country;
+                Log::info("获取赛程ID：-->".$item->id."数据成功\n");
                 echo "获取赛程ID：-->".$item->id."数据成功\n";
                 //sleep(5);
             }
@@ -52,7 +55,7 @@ class LqSclass extends Model
             Cache::store('file')->forever('SClass_list', $sorted);
 
         }catch (\Exception $exception){
-            return "获取赛事数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE);
+            Log::info("获取赛事数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE));
         }
     }
 
