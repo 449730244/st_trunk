@@ -19,6 +19,7 @@ class ZqPlayerTech extends Model
     public function getPlayerTech()
     {
         //获取当天的所有比赛
+        Log::useFiles(storage_path('logs/getPlayerTech.log'));
         $playTech = [];
         $client = new Client(['base_uri' => 'http://sapi.meme100.com/']);
         $response = $client->request('GET', 'zq/PlayDetail.aspx', [
@@ -28,14 +29,14 @@ class ZqPlayerTech extends Model
         $data = json_decode($content,true);
         if(empty($data['data']['match']))
         {
-            Log::error('获取当天比赛数据为空');
+            Log::info('获取当天比赛数据为空');
         }else{
             if(count($data['data']['match']) != count($data['data']['match'],1))
             {
                 foreach ($data['data']['match'] as $keys => $SClass)
                 {
                     $ZqSClass = ZqSclass::where(["Name_JS"=>trim($SClass['league'])])->first(['SClassID']);
-                    echo "开始：".$keys."-->赛事：".$ZqSClass->SClassID."--->比赛:".$SClass['ScheduleID']."\n";
+                    Log::info("开始：".$keys."-->赛事：".$ZqSClass->SClassID."--->比赛:".$SClass['ScheduleID']."\n");
                     $client = new Client(['base_uri' => 'http://sapi.meme100.com/']);
                     $response = $client->request('GET', 'zq/PlayDetail.aspx', [
                         'query' => ['token'=>'12312313123','id'=>$SClass['ScheduleID']]
@@ -45,11 +46,11 @@ class ZqPlayerTech extends Model
                     Try{
                         if(empty($data['data']))
                         {
-                            return "比赛ID：{$SClass['ScheduleID']}，获取的数据为空，原始数据为:".$content;
+                            Log::info( "比赛ID：{$SClass['ScheduleID']}，获取的数据为空，原始数据为:".$content."\n");
                         }else{
                             foreach($data['data']['play'] as $key => $val)
                             {
-                                Log::error("开始：".$keys."-->赛事：".$ZqSClass->SClassID."--->比赛:".$SClass['ScheduleID']."\n");
+                                Log::info("开始：".$keys."-->赛事：".$ZqSClass->SClassID."--->比赛:".$SClass['ScheduleID']."\n");
                                 $name_list = explode(',',$val['playerName']);
                                 $playTech[$keys][$key]['SClassID']        = $ZqSClass->SClassID; //赛季ID
                                 $playTech[$keys][$key]['TeamID']          = $val['TeamID']; //球队ID
@@ -88,13 +89,13 @@ class ZqPlayerTech extends Model
                             }
                         }
                     }catch (\Exception $exception){
-                        return "获取比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE);
+                        Log::info("获取比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n");
                     }
                     sleep(15);
                 }
             }else{
                 $ZqSClass = ZqSclass::where(["Name_JS"=>trim($data['data']['match']['league'])])->first(['SClassID']);
-                echo "开始：-->赛事：".$ZqSClass->SClassID."--->比赛:".$data['data']['match']['ScheduleID']."\n";
+                Log::info("开始：-->赛事：".$ZqSClass->SClassID."--->比赛:".$data['data']['match']['ScheduleID']."\n");
                 $client = new Client(['base_uri' => 'http://sapi.meme100.com/']);
                 $response = $client->request('GET', 'zq/PlayDetail.aspx', [
                     'query' => ['token'=>'12312313123','id'=>$data['data']['match']['ScheduleID']]
@@ -104,11 +105,11 @@ class ZqPlayerTech extends Model
                 Try{
                     if(empty($data['data']))
                     {
-                        return "比赛ID：{$data['data']['match']['ScheduleID']}，获取的数据为空，原始数据为:".$content;
+                        Log::info("比赛ID：{$data['data']['match']['ScheduleID']}，获取的数据为空，原始数据为:".$content."\n");
                     }else{
                         foreach($data['data']['play'] as $key => $val)
                         {
-                            Log::error("开始：-->赛事：".$ZqSClass->SClassID."--->比赛:".$data['data']['match']['ScheduleID']."\n");
+                            Log::info("开始：-->赛事：".$ZqSClass->SClassID."--->比赛:".$data['data']['match']['ScheduleID']."\n");
                             $name_list = explode(',',$val['playerName']);
                             $playTech[$key]['SClassID']        = $ZqSClass->SClassID; //赛季ID
                             $playTech[$key]['TeamID']          = $val['TeamID']; //球队ID
@@ -147,7 +148,7 @@ class ZqPlayerTech extends Model
                         }
                     }
                 }catch (\Exception $exception){
-                    return "获取比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE);
+                    Log::info("获取比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n");
                 }
                 sleep(15);
             }
