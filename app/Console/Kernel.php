@@ -14,6 +14,12 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        \App\Console\Commands\getLineup::class,
+        \App\Console\Commands\getLqSchedule::class,
+        \App\Console\Commands\getLqSClass::class,
+        \App\Console\Commands\getPlayerTech::class,
+        \App\Console\Commands\getTodayLqSchedule::class,
+        \App\Console\Commands\setData::class
     ];
 
     /**
@@ -26,11 +32,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('sportsevent:getLqSchedule')->everyThirtyMinutes()();
-        $schedule->command('sportsevent:getLqSClass')->everyThirtyMinutes()();
-        $schedule->command('sportsevent:getLineup')->everyThirtyMinutes()();
-        $schedule->command('sportsevent:getPlayerTech')->everyThirtyMinutes()();
-        $schedule->command('sportsevent:getTodayLqSchedule')->everyThirtyMinutes()();
+        $schedule->command('sportsevent:getLqSchedule')->hourly();
+        $schedule->command('sportsevent:getLqSClass')->everyMinute();
+        $schedule->command('sportsevent:getLineup')->everyMinute();
+        $schedule->command('sportsevent:getPlayerTech')->everyMinute();
+        $schedule->command('sportsevent:getTodayLqSchedule')->everyMinute();
         $schedule->command('sportsevent:setData')->hourly();
     }
 
