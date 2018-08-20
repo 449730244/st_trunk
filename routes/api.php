@@ -87,6 +87,11 @@ $api->version('v1', [
             $api->get('lqletgoalhalf', 'LqLetgoalController@letgoalhalf')->name('api.lqLetgoal.lqletgoalhalf');
             $api->get('lqtotalscorehalf', 'LqLetgoalController@totalscorehalf')->name('api.lqLetgoal.lqtotalscorehalf');
 
+            //篮球国家列表
+            $api->get('/lq/lqSclassInfo','LqSclassInfoController@index')->name('api.lqsclassinfo.index');
+            //篮球赛事列表
+
+
         });
     });
 

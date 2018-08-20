@@ -28,12 +28,10 @@ class LqSchedule extends Model
                 if(empty($data['data']))
                 {
                     echo "获取赛事{$sclass->SClassID}的数据为空\n";
-                    break;
                 }else{
                     $match = $data['data']['h'];
                     if(is_array($match))
                     {
-                        dd($match);
                         foreach ($match as $key => $item)
                         {
                             $arr = explode('^',$item);

@@ -261,7 +261,6 @@ class SetDataController extends Controller
             \DB::transaction(function() use ($data) {
                 foreach ($data as $item)
                 {
-                    dd($item);
                     foreach($item as $val)
                     {
 
