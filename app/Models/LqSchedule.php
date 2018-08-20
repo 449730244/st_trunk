@@ -17,19 +17,17 @@ class LqSchedule extends Model
     public function getSchedule()
     {
         try{
-            Log::useFiles(storage_path('logs/getSchedule.log'));
             $schedule = [];
             foreach (LqSclass::orderBy('SClassID','asc')->cursor() as $k => $sclass) {
                 $client = new Client(['base_uri' => 'http://sapi.meme100.com/']);
                 $response = $client->request('get','lq/LqSchedule.aspx', [
-                    'query' => ['token'=>'12312313123','sclassid' => 304]
+                    'query' => ['token'=>'12312313123','sclassid' => $sclass->SClassID]
                 ]);
                 $content = $response->getBody();
                 $data = json_decode($content,true);
                 if(empty($data['data']))
                 {
                     echo "获取赛事{$sclass->SClassID}的数据为空\n";
-                    Log::info("获取赛事{$sclass->SClassID}的数据为空\n");
                     break;
                 }else{
                     $match = $data['data']['h'];
@@ -139,14 +137,13 @@ class LqSchedule extends Model
                     }
                 }
                 echo "获取赛事{$sclass->SClassID}的数据成功\n";
-                Log::info("获取赛事{$sclass->SClassID}的数据成功\n");
                 sleep(90);
             }
             $collection = collect($schedule);
             $sorted = $collection->sortBy('ScheduleID');
             Cache::store('file')->forever('Schedule_list', $sorted);
         }catch (\Exception $exception){
-            Log::info("获取比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n");
+           echo "获取比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n";
         }
     }
 
@@ -207,13 +204,13 @@ class LqSchedule extends Model
                 $schedule[$key]['TVShow'] = $arr[33];
                 $schedule[$key]['TVRemark'] = $arr[34];
                 $schedule[$key]['Neutral'] = $arr[35];
-                Log::info("获取比赛ID：".$arr[0]."数据成功\n");
+                echo "获取比赛ID：".$arr[0]."数据成功\n";
             }
             $collection = collect($schedule);
             $sorted = $collection->sortBy('ScheduleID');
             Cache::store('file')->forever('TodayScheduleList', $sorted);
         }catch(\Exception $exception){
-            Log::info("获取今日比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n");
+           echo "获取今日比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n";
         }
     }
 

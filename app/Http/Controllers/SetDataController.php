@@ -83,10 +83,9 @@ class SetDataController extends Controller
 
     public function PlayerTech()
     {
-        Log::useFiles(storage_path('logs/setData.log'));
         if (!Cache::store('file')->has('Play_Detail'))
         {
-            Log::info("球员技术统计缓存里没有数据");
+            echo "球员技术统计缓存里没有数据\n";
         }
         $data = Cache::store('file')->get('Play_Detail');
         try{
@@ -128,9 +127,9 @@ class SetDataController extends Controller
                     }
                 }
             });
-            Log::info("球员技术统计数据写入数据库成功\n");
+            echo "球员技术统计数据写入数据库成功\n";
         }catch (\Exception $exception){
-            Log::info("球员技术统计数据写入数据库失败：".$exception->getMessage());
+            echo "球员技术统计数据写入数据库失败：".$exception->getMessage()."\n";
 
         }
     }
@@ -172,10 +171,9 @@ class SetDataController extends Controller
 
     public function lineup()
     {
-        Log::useFiles(storage_path('logs/setData.log'));
         if (!Cache::store('file')->has('Zq_Lineup'))
         {
-            Log::info("比赛阵容缓存里没有数据");
+            echo "比赛阵容缓存里没有数据\n";
         }
         $data = Cache::store('file')->get('Zq_Lineup');
         try{
@@ -195,19 +193,18 @@ class SetDataController extends Controller
                     );
                 }
             });
-            Log::info("比赛阵容数据写入数据库成功\n");
+            echo "比赛阵容数据写入数据库成功\n";
         }catch (\Exception $exception){
-            Log::info("比赛阵容数据写入数据库失败：".$exception->getMessage());
+            echo "比赛阵容数据写入数据库失败：".$exception->getMessage()."\n";
         }
     }
 
 
     public function lqSClass()
     {
-        Log::useFiles(storage_path('logs/setData.log'));
         if (!Cache::store('file')->has('SClass_list'))
         {
-            Log::info("篮球赛事缓存里没有数据");
+            echo "篮球赛事缓存里没有数据\n";
         }
         $data = Cache::store('file')->get('SClass_list');
         try{
@@ -246,27 +243,28 @@ class SetDataController extends Controller
                     }
                 }
             });
-            Log::info("篮球赛事数据写入数据库成功\n");
+            echo "篮球赛事数据写入数据库成功\n";
         }catch (\Exception $exception){
-            Log::info("篮球赛事数据写入数据库失败：".$exception->getMessage());
+            echo "篮球赛事数据写入数据库失败：".$exception->getMessage()."\n";
         }
     }
 
     //赛事下比赛数据入库
     public function set_lqSchedule()
     {
-        Log::useFiles(storage_path('logs/setData.log'));
         if (!Cache::store('file')->has('Schedule_list'))
         {
-            Log::info("篮球比赛缓存里没有数据");
+            echo "篮球比赛缓存里没有数据\n";
         }
         $data = Cache::store('file')->get('Schedule_list');
         try{
             \DB::transaction(function() use ($data) {
                 foreach ($data as $item)
                 {
+                    dd($item);
                     foreach($item as $val)
                     {
+
                         LqSchedule::updateOrCreate(
                             ['ScheduleID'=>$val['ScheduleID'],'SClassID'=>$val['SClassID']],
                             [
@@ -321,19 +319,16 @@ class SetDataController extends Controller
 
             });
             echo "篮球比赛数据写入数据库成功\n";
-            Log::info("篮球比赛数据写入数据库成功\n");
         }catch (\Exception $exception){
             echo "篮球比赛数据写入数据库失败：".$exception->getMessage();
-            Log::info("篮球比赛数据写入数据库失败：".$exception->getMessage());
         }
     }
 
     public function SetLqSClass()
     {
-        Log::useFiles(storage_path('logs/setData.log'));
         if (!Cache::store('file')->has('SClassInfo'))
         {
-            Log::info("新篮球赛事缓存里没有数据");
+            echo "新篮球赛事缓存里没有数据\n";
         }
         $data = Cache::store('file')->get('SClassInfo');
         try{
@@ -364,9 +359,9 @@ class SetDataController extends Controller
                     }
                 }
             });
-            Log::info("新篮球赛事数据写入数据库成功\n");
+            echo "新篮球赛事数据写入数据库成功\n";
         }catch (\Exception $exception){
-            Log::info("新篮球赛事数据写入数据库失败：".$exception->getMessage());
+            echo "新篮球赛事数据写入数据库失败：".$exception->getMessage()."\n";
         }
     }
 
@@ -375,10 +370,9 @@ class SetDataController extends Controller
     //今日比赛数据入库
     public function set_today_lqSchedule()
     {
-        Log::useFiles(storage_path('logs/setData.log'));
         if (!Cache::store('file')->has('TodayScheduleList'))
         {
-            Log::info("今日比赛缓存里没有数据");
+            echo "今日比赛缓存里没有数据\n";
         }
         $data = Cache::store('file')->get('TodayScheduleList');
         try{
@@ -431,9 +425,9 @@ class SetDataController extends Controller
                     );
                 }
             });
-            Log::info("今日篮球比赛数据写入数据库成功\n");
+            echo "今日篮球比赛数据写入数据库成功\n";
         }catch (\Exception $exception){
-            Log::info("今日篮球比赛数据写入数据库失败：".$exception->getMessage());
+            echo "今日篮球比赛数据写入数据库失败：".$exception->getMessage()."\n";
         }
     }
 }
