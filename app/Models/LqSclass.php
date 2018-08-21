@@ -95,4 +95,8 @@ class LqSclass extends Model
         return !empty($value) ? (is_array($value) || is_object($value) ? json_encode($value) : trim($value)) : null;
     }
 
+    public function schedules(){
+        return $this->hasMany(LqSclass::class,'SClassID','SClassID');
+    }
+
 }

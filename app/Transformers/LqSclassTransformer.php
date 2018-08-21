@@ -17,7 +17,7 @@ class LqSclassTransformer extends TransformerAbstract
     {
         return [
             'SClassID' => $lqSclass->SClassID,
-            'Color' => $lqSclass->Color,
+            'Color' => trim($lqSclass->Color),
             'Name_JS' => $lqSclass->Name_JS,
             'Name_J'=> $lqSclass->Name_J,
             'Name_F'=> $lqSclass->Name_F,

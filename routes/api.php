@@ -69,7 +69,7 @@ $api->version('v1', [
             $api->get('zqsclasses/{sclass}/subsclasses/{matchSeason}', 'ZqSubSclassController@index')->name('api.zqSubSclass.index');
             //获取某场比赛的球员数据
             $api->get('zqplayertech','ZqPlayerTechController@index')->name('api.zqplayertech.index');
-            //获取某场比赛的阵容
+            //获取比赛的阵容
             $api->get('zqlineup','ZqLineupController@index')->name('api.zqlineup.index');
 
 
@@ -87,9 +87,10 @@ $api->version('v1', [
             $api->get('lqletgoalhalf', 'LqLetgoalController@letgoalhalf')->name('api.lqLetgoal.lqletgoalhalf');
             $api->get('lqtotalscorehalf', 'LqLetgoalController@totalscorehalf')->name('api.lqLetgoal.lqtotalscorehalf');
 
+            //篮球赛事列表
+            $api->get('/lq/lqsclass/{country_id}','LqSclassController@index')->name('api.lqsclass.index');
             //篮球国家列表
             $api->get('/lq/lqSclassInfo','LqSclassInfoController@index')->name('api.lqsclassinfo.index');
-            //篮球赛事列表
 
 
         });
