@@ -136,9 +136,9 @@ class LqSchedule extends Model
                         $schedule[$k][]['MatchCate'] = $arr[39];
                         $schedule[$k][]['MatchSubSClass'] = $arr[40];
                     }
+                    echo "获取赛事{$sclass->SClassID}的数据成功\n";
+                    Log::info("获取赛事{$sclass->SClassID}的数据成功\n");
                 }
-                echo "获取赛事{$sclass->SClassID}的数据成功\n";
-                Log::info("获取赛事{$sclass->SClassID}的数据成功\n");
                 sleep(90);
             }
             $collection = collect($schedule);
