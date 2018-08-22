@@ -40,6 +40,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('sportsevent:setData')->hourly()->withoutOverlapping()->sendOutputTo(storage_path('logs/setDataInfo.log'));
         $schedule->command('ZqLetgoal:peilv')->everyFiveMinutes();
         $schedule->command('LqLetgoal:peilv')->everyFiveMinutes();
+        $schedule->command('sportsevent:getBfXml')->everyThirtyMinutes();
+        $schedule->command('sportsevent:setBfXml')->hourly();
     }
 
     /**

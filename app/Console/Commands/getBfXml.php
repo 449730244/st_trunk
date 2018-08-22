@@ -22,12 +22,13 @@ class getBfXml extends Command
 
     public function handle()
     {
-        $startId = $this->ask('input start id');
-        $endId = $this->ask('input end id');
+        //$startId = $this->ask('input start id');
+       // $endId = $this->ask('input end id');
 
         Log::useFiles(storage_path('logs/BF_XML.log'));
         $this->info('start');
-        foreach (ZqSclass::where('SClassID','>=',$startId)->where('SClassID','<',$endId)->orderBy('SClassID','asc')->cursor() as $sclass) {
+        //foreach (ZqSclass::where('SClassID','>=',$startId)->where('SClassID','<',$endId)->orderBy('SClassID','asc')->cursor() as $sclass) {
+        foreach (ZqSclass::orderBy('SClassID','asc')->cursor() as $sclass) {
             $return = $this->getData->BF_XML($sclass->SClassID);
             if ($return != 'success'){
                 Log::error($return, ['sclassid' => $sclass->SClassID]);

@@ -77,3 +77,8 @@ Route::get('/set/lqSchedule', 'SetDataController@set_lqSchedule'); //
 Route::get('/set/todayLqSchedule', 'SetDataController@set_today_lqSchedule'); //
 Route::get('/set/SetLqSClass', 'SetDataController@SetLqSClass'); //
 Route::get('/set/set_lqSchedule', 'SetDataController@set_lqSchedule'); //
+
+Route::get('getSportHome', 'GetSportController@getSportHome'); //
+Route::get('setSportData', 'GetSportController@setSportData'); //
+
+Route::get('getLeftData', 'GetSportController@getLeftData'); //

@@ -32,7 +32,7 @@ $api->version('v1', [
         //用户登录
         $api->post('authorizations', 'AuthorizationsController@store')->name('api.authorizations.store');
         // 刷新token
-        $api->put('authorizations/current', 'AuthorizationsController@update')->name('api.authorizations.update');
+        $api->put('authorizations/update', 'AuthorizationsController@update')->name('api.authorizations.update');
         // 删除token
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')->name('api.authorizations.destroy');
     });
@@ -49,18 +49,22 @@ $api->version('v1', [
             //用户列表
             $api->get('users', 'UsersController@index')->name('api.user.index');
             //获取足球地区
-            $api->get('zqareas','ZqAreasController@index')->name('api.zqarea.index');
+            $api->get('zq/areas','ZqAreasController@index')->name('api.zqarea.index');
             //获取赛事
             $api->get('zqsclass/{country_id}', 'ZqSclassController@index')->name('api.zqSclass.index');
             //获取赛事下的赛季
             $api->get('zqsclasses/{sclass}/seasons', 'ZqMatchSeasonsController@index')->name('api.zqmatchseasons.index');
 
+            //足球
             //球队信息
-            $api->get('zqteaminfo', 'TeamInfoController@zqTeamInfo')->name('api.zqteam.info');
+            $api->get('zq/teaminfo', 'ZqBaseDataInfoController@zqTeamInfo')->name('api.zqbasedatainfo.info');
+            $api->get('zq/playerinfo', 'ZqBaseDataInfoController@playerinfo')->name('api.zqbasedatainfo.info');
             //射手榜
-            $api->get('zqtopscorer','TeamInfoController@zqTopScore')->name('api.zqteam.topscorer');
+            $api->get('zq/topscorer','ZqBaseDataInfoController@zqTopScore')->name('api.zqbasedatainfo.topscorer');
             //国家列表
-            $api->get('countrylist','TeamInfoController@countryList')->name('api.zqteam.countrylist');
+            $api->get('zq/countrylist','ZqBaseDataInfoController@countryList')->name('api.zqbasedatainfo.countrylist');
+            //积分数据
+            $api->get('zq/zqjifen','ZqBaseDataInfoController@zqJifen')->name('api.zqbasedatainfo.zqjifen');
 
 
             //获取赛事的赛程
@@ -87,13 +91,22 @@ $api->version('v1', [
             $api->get('lqletgoalhalf', 'LqLetgoalController@letgoalhalf')->name('api.lqLetgoal.lqletgoalhalf');
             $api->get('lqtotalscorehalf', 'LqLetgoalController@totalscorehalf')->name('api.lqLetgoal.lqtotalscorehalf');
 
+
+           //篮球基本数据
+            $api->get('lq/teaminfo','lqBaseDataInfoController@teamInfo')->name('api.lqBaseDataInfo.lqteaminfo');
+            $api->get('lq/playerinfo','lqBaseDataInfoController@playerInfo')->name('api.lqBaseDataInfo.playerinfo');
+            $api->get('lq/jifen','lqBaseDataInfoController@score')->name('api.lqBaseDataInfo.score');
+            $api->get('lq/teahniccount','lqBaseDataInfoController@teahnicCount')->name('api.lqBaseDataInfo.teahniccount');
+
             //篮球赛事列表
             $api->get('/lq/lqsclass/{country_id}','LqSclassController@index')->name('api.lqsclass.index');
             //篮球国家列表
             $api->get('/lq/lqSclassInfo','LqSclassInfoController@index')->name('api.lqsclassinfo.index');
-
-
+            //篮球比赛
+            $api->get('/lq/lqSchedule/{sclass_id}','LqScheduleController@index')->name('api.lqsclassinfo.index');
+            
         });
     });
+    $api->get('test9','lqBaseDataInfoController@teahnicCount')->name('api.lqBaseDataInfo.score');
 
 });
