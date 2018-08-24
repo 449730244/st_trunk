@@ -36,7 +36,7 @@ class LqLetgoal extends Model
     public function writedata($ScheduleID='0')
     {
 	if($ScheduleID == '0') return '没有传入赛事id';
-        $content = $this->getCurl('http://120.198.143.213:8072/phone/LqHandicap2.aspx?ID='.$ScheduleID.'&lang=0');
+        $content = getCurl('http://120.198.143.213:8072/phone/LqHandicap2.aspx?ID='.$ScheduleID.'&lang=0');
         if (!empty($content)) {
             $list = explode('!',$content);
             $ud_data = array();
@@ -127,15 +127,6 @@ class LqLetgoal extends Model
         }
         return $company_id;
     }
-    public function getCurl($url){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        $result = curl_exec($ch);
-        curl_close ($ch);
-        return $result;
-    }
+
 
 }

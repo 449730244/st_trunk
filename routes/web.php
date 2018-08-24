@@ -22,12 +22,14 @@ Route::get('/test', 'HomeController@test')->name('test');
 Route::get('/odds/allball', 'GetLetgoalDataController@get_letgoal_data'); //获取赔率信息写入数据表中
 Route::get('/odds/halfball', 'GetLetgoalDataController@get_halfletgoal_data'); //获取半场赔率信息写入数据表中
 Route::get('/odds/standard', 'GetLetgoalDataController@get_standard_data'); //欧赔
+Route::get('/odds/standardDetail', 'GetLetgoalDataController@get_standard_detail_data'); //欧赔详情
 Route::get('/odds/standardhalf', 'GetLetgoalDataController@get_standardhalf_data'); //半场欧赔
 Route::get('/odds/totalscore', 'GetLetgoalDataController@get_totalscore_data'); //大小球
 Route::get('/odds/totalscorehalf', 'GetLetgoalDataController@get_totalscorehalf_data'); //半场大小球
 Route::get('/lqodds/allball', 'GetLetgoalDataController@get_lq_letgoal_data');//获取让分赔率
 Route::get('/lqodds/totalscore', 'GetLetgoalDataController@get_lq_totalscore_data');//大小球
 Route::get('/lqodds/europeodds', 'GetLetgoalDataController@get_lq_europeodds_data');//篮球欧赔
+Route::get('/lqodds/europeoddsDetail', 'GetLetgoalDataController@get_lq_europeodds_detail_data');//篮球欧赔详情
 Route::get('/lqodds/letgoalhalf', 'GetLetgoalDataController@get_lq_letgoalhalf_data');//半球让球
 Route::get('/lqodds/totalscorehalf', 'GetLetgoalDataController@get_lq_totalscorehalf_data');//半球大小球
 
@@ -82,3 +84,6 @@ Route::get('getSportHome', 'GetSportController@getSportHome'); //
 Route::get('setSportData', 'GetSportController@setSportData'); //
 
 Route::get('getLeftData', 'GetSportController@getLeftData'); //
+Route::get('getLqSportHome', 'GetSportController@getLqSportHome'); //
+
+Route::get('getZqPlayerTech', 'GetSportController@getZqPlayerTech');

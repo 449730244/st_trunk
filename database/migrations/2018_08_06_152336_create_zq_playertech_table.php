@@ -54,6 +54,7 @@ class CreateZqPlayertechTable extends Migration
             $table->integer('yellow')->nullable()->comment('黄牌');
             $table->integer('ownGoal')->nullable()->comment('乌龙球数');
             $table->integer('touch')->nullable()->comment('手球');
+            $table->integer('turnOver')->nullable()->comment('失球数');
             $table->integer('penaltyProvoked')->nullable()->comment('罚球');
             $table->integer('shotsOnPost')->nullable()->comment('射中门柱次数');
             $table->integer('Goals')->nullable()->comment('进球');

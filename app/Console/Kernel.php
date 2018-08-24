@@ -32,11 +32,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('sportsevent:getLqSchedule')->hourly()->withoutOverlapping()->sendOutputTo(storage_path('logs/getLqScheduleInfo.log'));
-        $schedule->command('sportsevent:getLqSClass')->everyMinute()->sendOutputTo(storage_path('logs/getLqSClassInfo.log'));
-        $schedule->command('sportsevent:getLineup')->everyMinute()->sendOutputTo(storage_path('logs/getLineupInfo.log'));
-        $schedule->command('sportsevent:getPlayerTech')->everyMinute()->sendOutputTo(storage_path('logs/getPlayerTechInfo.log'));
-        $schedule->command('sportsevent:getTodayLqSchedule')->everyMinute()->sendOutputTo(storage_path('logs/getTodayLqScheduleInfo.log'));
+        $schedule->command('sportsevent:getLqSchedule')->everyThirtyMinutes()->withoutOverlapping()->sendOutputTo(storage_path('logs/getLqScheduleInfo.log'));
+        $schedule->command('sportsevent:getLqSClass')->everyThirtyMinutes()->sendOutputTo(storage_path('logs/getLqSClassInfo.log'));
+        $schedule->command('sportsevent:getLineup')->everyThirtyMinutes()->sendOutputTo(storage_path('logs/getLineupInfo.log'));
+        $schedule->command('sportsevent:getPlayerTech')->everyThirtyMinutes()->sendOutputTo(storage_path('logs/getPlayerTechInfo.log'));
+        $schedule->command('sportsevent:getTodayLqSchedule')->everyThirtyMinutes()->sendOutputTo(storage_path('logs/getTodayLqScheduleInfo.log'));
         $schedule->command('sportsevent:setData')->hourly()->withoutOverlapping()->sendOutputTo(storage_path('logs/setDataInfo.log'));
         $schedule->command('ZqLetgoal:peilv')->everyFiveMinutes();
         $schedule->command('LqLetgoal:peilv')->everyFiveMinutes();

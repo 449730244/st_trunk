@@ -1,6 +1,5 @@
 <?php
 namespace App\Models;
-use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 class LqEuropeodds extends Model
@@ -8,118 +7,90 @@ class LqEuropeodds extends Model
     protected $table    =   'lq_europeodds';
 
     protected  $primaryKey='identity';
-
-    protected $fillable = [  
-        "CompanyID",
-        "ScheduleID",
-        "HomeTeamID",
-        "GuestTeamID",
-        "HomeTeam",
-        "GuestTeam",
-        "FirstHomeWin",
-        "FirstGuestWin",
-        "HomeWin",
-        "GuestWin",
-        "FirstHomeWinRate",
-        "FirstGuestWinRate",
-        "FristbackRate",
-        "HomeWinRate",
-        "GuestWinRate",
-        "backRate",
-        "kaili1",
-        "kaili2",
-        "time1",
-        "OddsID",
-        "CompanyName",
-        "time2", 
-    ];
+    protected $guarded = [];
     public function get_lq_europeodds_data(){
-        $client = new Client(['base_uri' => 'http://sapi.meme100.com/']);
-        $response = $client->request('GET', 'lq/1x2.aspx', [
-            'query' => ['token'=>'12312313123']
-        ]);
-        $content = $response->getBody();
-        $obj = json_decode($content);
-        $data = $obj->data;
-        $ou_ret = $data->h;
-        if (!empty($ou_ret)) {
-            foreach ($ou_ret as $k => $va) {
-              if (empty($va->odds)) continue;
-                $ou_dar = json_decode(json_encode($va->odds->o),true);
-                if (!empty($ou_dar)) {
-                    if (is_array($ou_dar)) {
-                      $ar = $ou_dar;
-                    }else{
-                      $ar['0'] = $ou_dar;
-                    }
-                      $HomeWinRate_all = 0;
-                      $GuestWinRate_all = 0;
-                      $count = count($ar);
-                      foreach ($ar as $key => $value) {
-                          $vt=explode(',',trim($value));
-                          $HomeWinRate_all += round(1/(1+$vt['4']/$vt['5'])*100,2);//主队胜率
-                          $GuestWinRate_all += round(1/(1+$vt['5']/$vt['4'])*100,2);//客队胜率
-                      }
-                      $avg_HomeWinRate = round($HomeWinRate_all/$count,2);
-                      $avg_GuestWinRate = round($GuestWinRate_all/$count,2);
-                        foreach ($ar as $kt => $vd) {
-                            $vt=explode(',',trim($vd));
-                            $home_name_ar = explode(',',$va->home); 
-                            $away_name_ar = explode(',',$va->away);
-                            //初盘胜率计算
-                            $FirstHomeWinRate = round(1/(1+$vt['2']/$vt['3'])*100,2);//主队胜率
-                            $FirstGuestWinRate = round(1/(1+$vt['3']/$vt['2'])*100,2);//客队胜率
-                            //初盘返还率
-                            $FristbackRate = round($FirstHomeWinRate*$vt['2'],2);
-                            //即时胜率
-                            $HomeWinRate = round(1/(1+$vt['4']/$vt['5'])*100,2);//主队胜率
-                            $GuestWinRate = round(1/(1+$vt['5']/$vt['4'])*100,2);//客队胜率
-                            //即时返回率
-                            $backRate = round($HomeWinRate*$vt['4'],2);
-                            //凯利指数
-                            $kaili1 = round($vt['4']*$avg_HomeWinRate/100,2); //主队
-                            $kaili2 = round($vt['5']*$avg_GuestWinRate/100,2); //客队
-                            $ou_data[]=array(
-                            "CompanyID"=>$vt['0'],
-                            "ScheduleID"=>$va->id,
-                            // "HomeTeamID"=>'',
-                            // "GuestTeamID"=>'',
-                            "HomeTeam"=>"'".$home_name_ar['2']."'",
-                            "GuestTeam"=>"'".$away_name_ar['2']."'",
-                            "FirstHomeWin"=>$vt['2'],
-                            "FirstGuestWin"=>$vt['3'],
-                            "HomeWin"=>$vt['4'],
-                            "GuestWin"=>$vt['5'],
-                            "FirstHomeWinRate"=>$FirstHomeWinRate,
-                            "FirstGuestWinRate"=>$FirstGuestWinRate,
-                            "FristbackRate"=>$FristbackRate,
-                            "HomeWinRate"=>$HomeWinRate,
-                            "GuestWinRate"=>$GuestWinRate,
-                            "backRate"=>$backRate,
-                            "kaili1"=>$kaili1,
-                            "kaili2"=>$kaili2,
-                            "time1"=>$vt['6'],
-                            // "OddsID"=>'',
-                            "CompanyName"=>$vt['1'],
-                            // "identity"=>'',
-                            "time2"=>$va->time, 
-                             );
-                        }
-                    
-                    
-                }else{
-                    continue;
-                }     
-            }
-        }else{
-            $ou_data = array();
+        $ScheduleID_list=DB::table('lq_schedule')->get(['ScheduleID']);
+        foreach ($ScheduleID_list as $key => $value) {
+            $this->writedata($value->ScheduleID);
+            if ($key>0 && $key%500 == 0) sleep(90);
         }
-        if (!empty($ou_data)) {
-            foreach ($ou_data as $k => $v) {
-                LqEuropeodds::updateOrCreate(['ScheduleID' => $v["ScheduleID"],'CompanyID' => $v["CompanyID"]] , $v);
+        echo '操作成功';
+    }
+    public function writedata($ScheduleID)
+    {
+        //http://score.nowscore.com/nba/odds/1x2.aspx?id=320591 百家欧赔
+        $show_1 = substr($ScheduleID,0,1);
+        $show_2 = substr($ScheduleID,1,2);
+        $content = getCurl('http://nba.nowscore.com/1x2/'.$show_1.'/'.$show_2.'/'.$ScheduleID.'.js');
+
+        if(strstr($content,'</body>')) return;
+        $art = [$content];
+        $content = str_replace("\r\n", '', $art['0']);
+        $content = str_replace(";var ", '|-|', $content);
+        $ar_content = explode('|-|',$content);
+        // $con = explode('=',$ar_content['25']);
+        $game_info = '';
+        foreach ($ar_content as $ke => $vt) {
+            if (strstr($vt,'game=Array("')) $game_info = str_replace(array('game=Array("','")'),'',$vt);  
+        }
+        if (empty($game_info)) return;
+        $game_ar = explode('","',$game_info);       
+        $data_list = array();
+        if (!empty($game_ar)) {
+            foreach ($game_ar as $k => $v) {
+              $cd = explode(';',$v);
+              if($k == 0){
+                $arf['0'] = $cd[count($cd)-1];
+              }else{
+                $arf = $cd;
+              }
+              $HomeTeamID = str_replace('hometeamID=','',explode(';',$game_ar['0'])['6']);
+              $GuestTeamID = str_replace('guestteamID=','',explode(';',$game_ar['0'])['7']);
+              $HomeTeam = str_replace(array('hometeam_cn=','"'),'',explode(';',$game_ar['0'])['4']);
+              $GuestTeam = str_replace(array('guestteam_cn=','"'),'',explode(';',$game_ar['0'])['5']);
+              if (!empty($arf)) {
+                  foreach ($arf as $key => $value) {
+                      $cdar = explode("|",$value);
+                      if (count($cdar) == 20) {
+                          
+                        $data_list[]=array(
+                            "CompanyID"=>$cdar['0'],
+                            "ScheduleID"=>$ScheduleID,
+                            "HomeTeamID"=>$HomeTeamID,
+                            "GuestTeamID"=>$GuestTeamID,
+                            "HomeTeam"=>"'".$HomeTeam."'",
+                            "GuestTeam"=>"'".$GuestTeam."'",
+
+                            "FirstHomeWin"=>floatval($cdar['3']),
+                            "FirstGuestWin"=>floatval($cdar['4']),
+                            "HomeWin"=>floatval($cdar['8']),
+                            "GuestWin"=>floatval($cdar['9']),
+                            "FirstHomeWinRate"=>floatval($cdar['5']),
+                            "FirstGuestWinRate"=>floatval($cdar['6']),
+                            "FristbackRate"=>floatval($cdar['7']),
+                            "HomeWinRate"=>floatval($cdar['10']),
+                            "GuestWinRate"=>floatval($cdar['11']),
+                            "backRate"=>floatval($cdar['12']),
+                            "kaili1"=>floatval($cdar['13']),
+                            "kaili2"=>floatval($cdar['14']),
+
+                            //"time1"=>'',
+                            "OddsID"=>$cdar['1'],
+                            "CompanyName"=>$cdar['16'],
+                            //"time2"=>'',                        
+                          );
+                      }
+                      
+                  }
+              }
+            }
+        }
+        if (!empty($data_list)) {
+            foreach ($data_list as $k => $v) {
+                LqEuropeodds::updateOrCreate(['OddsID' => $v["OddsID"]] , $v);
             }
             
         }
-        echo '操作成功。';
+       
     }
 }

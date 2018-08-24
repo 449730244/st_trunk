@@ -79,8 +79,12 @@ $api->version('v1', [
 
             //赔率相关
             $api->get('zqLetgoal', 'ZqLetgoalController@index')->name('api.zqLetgoal.index');
+            $api->get('/zqletgoalinfo/{ScheduleID}', 'ZqLetgoalController@zqletgoalinfo')->name('api.zqLetgoal.zqletgoalinfo');
+            $api->get('/halfballinfo/{ScheduleID}', 'ZqLetgoalController@halfballinfo')->name('api.zqLetgoal.halfballinfo');
+
             $api->get('halfgoal', 'ZqLetgoalController@halfgoal')->name('api.zqLetgoal.halfgoal');
             $api->get('standard', 'ZqLetgoalController@standard')->name('api.zqLetgoal.standard');
+            $api->get('/standardinfo/{ScheduleID}', 'ZqLetgoalController@standardinfo')->name('api.zqLetgoal.standardinfo');
             $api->get('standardhalf', 'ZqLetgoalController@standardhalf')->name('api.zqLetgoal.standardhalf');
             $api->get('totalscore', 'ZqLetgoalController@totalscore')->name('api.zqLetgoal.totalscore');
             $api->get('totalscorehalf', 'ZqLetgoalController@totalscorehalf')->name('api.zqLetgoal.totalscorehalf');
@@ -88,6 +92,7 @@ $api->version('v1', [
             $api->get('lqLetgoal', 'LqLetgoalController@index')->name('api.lqLetgoal.index');
             $api->get('lqtotalscore', 'LqLetgoalController@totalscore')->name('api.lqLetgoal.lqtotalscore');
             $api->get('lqeuropeodds', 'LqLetgoalController@europeodds')->name('api.lqLetgoal.lqeuropeodds');
+            $api->get('lqeuropeoddsinfo/{ScheduleID}', 'LqLetgoalController@lqeuropeoddsinfo')->name('api.lqLetgoal.lqeuropeoddsinfo');
             $api->get('lqletgoalhalf', 'LqLetgoalController@letgoalhalf')->name('api.lqLetgoal.lqletgoalhalf');
             $api->get('lqtotalscorehalf', 'LqLetgoalController@totalscorehalf')->name('api.lqLetgoal.lqtotalscorehalf');
 

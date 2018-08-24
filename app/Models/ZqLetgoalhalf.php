@@ -2,13 +2,13 @@
 namespace App\Models;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
-
+use DB;
 class ZqLetgoalhalf extends Model
 {
     protected $table    =   'zq_letgoalhalf';
 
     protected  $primaryKey='OddsID';
-
+    public  $timestamps=false;
     protected $fillable = [  
         "ScheduleID",
         "CompanyID",
@@ -78,5 +78,56 @@ class ZqLetgoalhalf extends Model
             }
             
         }
+    }
+
+    public function writedata($ScheduleID)
+    {
+        //http://score.nowscore.com/odds/match.aspx?id=1576729 赔率三合一
+        $result = getCurl('http://score.nowscore.com/odds/match.aspx?t=1&id='.$ScheduleID);
+        $reg = '/<div id="odds"><TABLE cellSpacing=1 cellPadding=0 width=942 align=center bgColor=#bbbbbb border=0>(.*?)<\/TABLE><\/div>/i';
+        preg_match($reg,$result,$cth);
+        $preg = "/<tr.*?>(.*?)<\/tr>/ism";
+        preg_match_all($preg,$cth['1'],$matches);
+        $content = $matches['1'];
+        if(empty($content)) return;
+        $ar = array();
+        foreach ($content as $k => $v) {
+            if ($k > 1 && $k < (count($content)-2)) {
+                $v = strip_tags(str_replace('</TD>','</TD>|',$v));
+                $ar[] = $v;
+            }
+        }
+        $data_list=array();
+        foreach ($ar as $k => $v) {
+            $dar = explode("|",$v);
+            $cm = explode('                ',$dar['0']);
+            $ZouDi = 0;
+            if (!empty($cm['1']) && $cm['1'] == '走地') $ZouDi = 1;
+            $company_id = $this->get_company_id($cm['0']);
+            $data_list[]=array(
+                "ScheduleID"=>$ScheduleID,
+                "CompanyID"=>$company_id,
+                "FirstGoal"=>$dar['2'],
+                "FirstUpOdds"=>floatval($dar['1']),
+                "FirstDownOdds"=>floatval($dar['3']),
+                "Goal"=>$dar['5'],
+                "UpOdds"=>floatval($dar['4']),
+                "DownOdds"=>floatval($dar['6']),
+                // "Goal_Real"=>'',
+                // "UpOdds_Real"=>'',
+                // "DownOdds_Real"=>'',
+                // "ModifyTime"=>'',
+                // "Result"=>'',
+                "ZouDi"=>$ZouDi,                  
+            );
+        }
+        if (!empty($data_list)) {
+            foreach ($data_list as $k => $v) {
+                ZqLetgoalhalf::updateOrCreate(['ScheduleID' => $v["ScheduleID"],'CompanyID' => $v["CompanyID"]] , $v);
+            }        
+        }      
+    }
+    public function get_company_id($name){
+            return DB::table('zq_company')->where('Name',$name)->value('CompanyID');
     }
 }
