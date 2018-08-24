@@ -21,13 +21,13 @@ class CreateZqPlayertechTable extends Migration
             $table->string('Name_F')->nullable()->comment('球员名字繁体');
             $table->integer('SchSum')->nullable()->comment('出场');
             $table->integer('BackSum')->nullable()->comment('替补');
-            $table->dateTime('PlayingTime')->nullable()->comment('出场时间');
+            $table->integer('PlayingTime')->nullable()->comment('出场时间');
             $table->integer('notPenaltyGoals')->nullable()->comment('常规进球数');
             $table->integer('penaltyGoals')->nullable()->comment('点球进球数');
             $table->integer('shots')->nullable()->comment('射门次数');
             $table->integer('shotsTarget')->nullable()->comment('射正次数');
             $table->integer('wasFouled')->nullable()->comment('被侵犯');
-            $table->string('bestSum')->nullable()->comment('最佳');
+            $table->integer('bestSum')->nullable()->comment('最佳');
             $table->double('rating',10,2)->nullable()->comment('评分');
             $table->integer('effRating')->nullable();
             $table->integer('totalPass')->nullable()->comment('总传球数');
@@ -62,7 +62,7 @@ class CreateZqPlayertechTable extends Migration
             $table->integer('assistMinute')->nullable()->comment('分钟/助攻');
             $table->integer('goalMinute')->nullable()->comment('分钟/球');
             $table->integer('goalPercent')->nullable()->comment('入球转化率');
-            $table->integer('type')->nullable()->comment('类型：home：主，guest：客 total：全');
+            $table->string('type')->nullable()->comment('类型：home：主，guest：客 total：全');
             $table->integer('SClassID')->nullable()->comment('赛事');
             $table->integer('TeamID')->nullable()->comment('所属队伍id');
             $table->integer('MatchSeason')->nullable()->comment('赛季');

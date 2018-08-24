@@ -26,7 +26,9 @@ class sportData extends Command
 
         $SportData = new GetSportController();
         $SportData->getZqPlayerTech();
-
+        $SportData->getSportHome();
+        $SportData->getLeftData();
+        $SportData->getLqSportHome();
         $this->info('end');
     }
 
