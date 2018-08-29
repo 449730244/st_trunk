@@ -6,6 +6,7 @@ use App\Models\LqSchedule;
 use App\Models\LqSclass;
 use App\Models\ZqLineup;
 use App\Models\ZqPlayerTech;
+use App\Models\ZqSchedule;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 
@@ -54,5 +55,11 @@ class HomeController extends Controller
     {
         $LqSchedule = new LqSchedule();
         $LqSchedule->getSchedule();
+    }
+
+    public function getZqSchedule()
+    {
+        $ZqSchedule = new GetSportController();
+        $ZqSchedule->getZqSchedule();
     }
 }

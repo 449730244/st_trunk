@@ -88,3 +88,5 @@ Route::get('getLqSportHome', 'GetSportController@getLqSportHome'); //
 
 Route::get('getZqPlayerTech', 'GetSportController@getZqPlayerTech');
 Route::get('getZqMatchData', 'GetSportController@getZqMatchData');
+
+Route::get('getZqSchedule', 'HomeController@getZqSchedule');

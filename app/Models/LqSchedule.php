@@ -139,12 +139,13 @@ class LqSchedule extends Model
                     echo "获取赛事{$sclass->SClassID}的数据成功\n";
                     Log::info("获取赛事{$sclass->SClassID}的数据成功\n");
                 }
-                sleep(90);
+                sleep(120);
             }
             $collection = collect($schedule);
             $sorted = $collection->sortBy('ScheduleID');
             Cache::store('file')->forever('Schedule_list', $sorted);
         }catch (\Exception $exception){
+            echo "获取赛事{$sclass->SClassID}的数据异常".$exception->getMessage()."\n";
             Log::info("获取比赛数据异常".$exception->getMessage()."<br>获取的原始数据为:".json_encode($data,JSON_UNESCAPED_UNICODE)."\n");
         }
     }

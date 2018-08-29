@@ -383,4 +383,24 @@ class GetSportController extends Controller
             sleep(15);
         }
     }
+
+    public function getZqSchedule()
+    {
+        $SClass = ZqSclass::with('subSclasses')->orderBy('SClassID','asc')->get(['SClassID','Curr_matchSeason']);
+        foreach ($SClass as $item)
+        {
+            if(!empty($item->sub_sclasses))
+            {
+                dd($item->sub_sclasses);
+                /*foreach ($item->sub_sclasses as $sub)
+                {
+                    dd($sub);
+                }*/
+                //$content = self::curl('http://info.nowscore.com/jsData/matchResult/'.$item->Curr_matchSeason.'/s'.$item->SClassID.'_'.$item->SClassID.'.js');
+            }else{
+                $content = self::curl('http://info.nowscore.com/jsData/matchResult/2018-2019/s37_87.js');
+            }
+
+        }
+    }
 }

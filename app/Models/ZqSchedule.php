@@ -14,6 +14,4 @@ class ZqSchedule extends Model
         'Neutrality' => 'boolean',
         'bfShow' => 'boolean',
     ];
-
-
 }
